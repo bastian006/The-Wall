@@ -1,0 +1,61 @@
+@model Message
+
+<div class="container-fluid ">
+    <div class="row justify-content-center">
+        <form class="col" asp-action="createMsg" asp-controller="Home" method="post">
+            <input type="hidden" asp-for="UserId" value="@ViewBag.me">
+            <div class="row mt-4 align-items-end">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="col col-form-label" asp-for="Text">
+                            <h4>Post a Message</h4>
+                        </label>
+                        <div class="col">
+                            <span asp-validation-for="Text"></span>
+                            <textarea rows="3" class="form-control" asp-for="Text"></textarea>
+                        </div>
+                    </div>
+                    <button class="row ml-auto mr-3" type="submit">Post a Message</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    @{
+        foreach (var msg in ViewBag.msgs)
+        {
+            <div class="row">
+                <div class="col ml-4">
+                    <h6>@msg.WroteBy.FirstName @msg.WroteBy.LastName - @msg.CreatedAt.ToString("MMM dd, yyyy")</h6>
+                    <p>@msg.Text</p>
+                </div>
+            </div>
+            foreach(var cmnt in msg.Comments){
+            <div class="row">
+                <div class="col ml-5">
+                    <h6>@cmnt.User.FirstName @cmnt.User.LastName - @msg.CreatedAt.ToString("MMM dd, yyyy")</h6>
+                    <p>@cmnt.Text</p>
+                </div>
+            </div>
+            }
+        <div class="row justify-content-center">
+        <form class="col-10" action="createCmnt" method="post">
+            <input type="hidden" name="UId" value="@ViewBag.me">
+            <input type="hidden" name="MId" value="@msg.MessageId">
+            <div class="row mt-4 align-items-end">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="col col-form-label" name="Text">
+                            <h5>Post a Comment</h5>
+                        </label>
+                        <div class="col">
+                            <textarea class="form-control" name="Text"></textarea>
+                        </div>
+                    </div>
+                    <button class="row ml-auto mr-3" type="submit">Post a Comment</button>
+                </div>
+            </div>
+        </form>
+    </div>
+        }
+    }
+</div>
